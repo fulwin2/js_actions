@@ -1,14 +1,50 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
-inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
-runs:
-  using: 'node20'
-  main: 'index.js'
+name: Greet and List
 
+on:
+  push:
+    branches:
+      - main
+    outputs:
+      time:
+        description: "Time output string"
+        value: ${{ jobs.greet.outputs.time }}
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    outputs:
+      time: ${{ steps.greeting.outputs.time }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Greet someone and record the time
+      id: greeting
+      run: |
+        npm install
+        node index.js "${{ inputs.who-to-greet }}"
+      env:
+        WHO_TO_GREET: ${{ inputs.who-to-greet }}
+
+    - name: Set output
+      run: echo "Time=${{ steps.greeting.outputs.time }}" >> $GITHUB_ENV
+
+    - name: List files
+      run: ls
+
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: List files
+      run: ls
+
+    - name: Show greetings
+      run: echo "Hello, ${{ env.WHO_TO_GREET }}!"
