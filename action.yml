@@ -1,5 +1,9 @@
 name: Greet and List
-
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
 on:
   push:
     branches:
@@ -7,7 +11,7 @@ on:
     outputs:
       time:
         description: "Time output string"
-        value: "${{ jobs.greet.outputs.time }}"
+        value: ${{ jobs.greet.outputs.time }}
 jobs:
   greet:
     runs-on: ubuntu-latest
@@ -26,7 +30,7 @@ jobs:
       id: greeting
       run: |
         npm install
-        node index.js "${{ inputs.who-to-greet }}"
+        node index.js ${{ inputs.who-to-greet }}
       env:
         WHO_TO_GREET: ${{ inputs.who-to-greet }}
 
