@@ -35,7 +35,8 @@ jobs:
     - name: Greet someone and record the time
       id: greeting
       run: |
-        npm install
+        ls -lsa
+        ls -lsa ../../
         node index.js ${{ inputs.who-to-greet }}
       env:
         WHO_TO_GREET: ${{ inputs.who-to-greet }}
