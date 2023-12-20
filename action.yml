@@ -7,7 +7,7 @@ on:
     outputs:
       time:
         description: "Time output string"
-        value: ${{ jobs.greet.outputs.time }}
+        value: "${{ jobs.greet.outputs.time }}"
 jobs:
   greet:
     runs-on: ubuntu-latest
