@@ -21,8 +21,8 @@ jobs:
       secondword: ${{ steps.step2.outputs.secondword }}
       time: ${{ steps.greeting.outputs.time }}
     steps:
-    #- name: Checkout code
-    #  uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
