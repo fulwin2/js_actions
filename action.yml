@@ -4,19 +4,22 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
     outputs:
-      time:
-        description: "Time output string"
-        value: ${{ jobs.greet.outputs.time }}
+      sesecondword:
+        description: 'The from ECHO'
+        value: ${{ jobs.greet.outputs.secondword }}
+
 jobs:
   greet:
     runs-on: ubuntu-latest
     outputs:
-      time: ${{ steps.greeting.outputs.time }}
+      sesecondword: ${{ steps.step2.outputs.secondword }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -25,6 +28,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20'
+    - id: step2
+      run: echo "secondword=world" >> $GITHUB_OUTPUT
 
     - name: Greet someone and record the time
       id: greeting
@@ -34,21 +39,5 @@ jobs:
       env:
         WHO_TO_GREET: ${{ inputs.who-to-greet }}
 
-    - name: Set output
-      run: echo "Time=${{ steps.greeting.outputs.time }}" >> $GITHUB_ENV
-
     - name: List files
-      run: ls
-
-  hello-world:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: List files
-      run: ls
-
-    - name: Show greetings
-      run: echo "Hello, ${{ env.WHO_TO_GREET }}!"
+      run: ls -lsa
