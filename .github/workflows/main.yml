@@ -1,0 +1,42 @@
+name: Reusable workflow
+on:
+  workflow_call:
+    inputs:
+      who-to-greet:  # id of input
+        description: 'Who to greet'
+        required: true
+        default: 'World'
+    outputs:
+      secondword:
+        description: 'The from ECHO'
+        value: ${{ jobs.greet.outputs.secondword }}
+      time: # id of output
+        description: 'The time we greeted you'
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    outputs:
+      sesecondword: ${{ steps.step2.outputs.secondword }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - id: step2
+      run: echo "secondword=world" >> $GITHUB_OUTPUT
+
+    - name: Greet someone and record the time
+      id: greeting
+      run: |
+        npm install
+        node index.js ${{ inputs.who-to-greet }}
+      env:
+        WHO_TO_GREET: ${{ inputs.who-to-greet }}
+
+    - name: List files
+      run: ls -lsa
