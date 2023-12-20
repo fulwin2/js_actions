@@ -3,6 +3,7 @@ on:
   workflow_call:
     inputs:
       who-to-greet:  # id of input
+        type: string
         description: 'Who to greet'
         required: true
         default: 'World'
@@ -12,12 +13,13 @@ on:
         value: ${{ jobs.greet.outputs.secondword }}
       time: # id of output
         description: 'The time we greeted you'
-
+        value: ${{ jobs.greet.outputs.time }}
 jobs:
   greet:
     runs-on: ubuntu-latest
     outputs:
-      sesecondword: ${{ steps.step2.outputs.secondword }}
+      secondword: ${{ steps.step2.outputs.secondword }}
+      time: ${{ steps.greeting.outputs.time }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
