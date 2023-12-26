@@ -30,14 +30,13 @@ jobs:
         node-version: '20'
 
     - id: step2
-      run: echo "secondword=world" >> $GITHUB_OUTPUT
-
+      run: |
+        echo "secondword=world" >> $GITHUB_OUTPUT
+        echo ${{ inputs.who-to-greet }}
+        
     - name: Greet someone and record the time
       id: greeting
       run: |
-        ls -lsa
-        ls -lsa ../
-        ls -lsa ../../
         node index.js ${{ inputs.who-to-greet }}
       env:
         WHO_TO_GREET: ${{ inputs.who-to-greet }}
