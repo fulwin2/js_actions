@@ -6,6 +6,8 @@ try {
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
   console.log(process.argv[2]);
+  console.log(process.argv[1]);
+  console.log(process.argv[0]);
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
   // Get the JSON webhook payload for the event that triggered the workflow
